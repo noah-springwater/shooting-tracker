@@ -1,7 +1,13 @@
 <template lang="html">
-  <div id="firebaseui-auth-container">
+  <div class="auth-container">
+    <div id="firebaseui-auth-container">
+    </div>
     <div class="yello">
       <span>yello</span>
+    </div>
+    <div class="increment-container">
+      <div>Increment Button</div>
+      <div class="store-increment" v-on:click="plusOne">{{ currentCount }}</div>
     </div>
   </div>
 </template>
@@ -23,6 +29,16 @@ export default {
     }
     var ui = new firebaseui.auth.AuthUI(firebase.auth())
     ui.start('#firebaseui-auth-container', uiConfig)
+  },
+  methods: {
+    plusOne () {
+      this.$store.commit('INCREMENT', { amount: 5 })
+    }
+  },
+  computed: {
+    currentCount () {
+      return this.$store.state.count
+    }
   }
 }
 </script>
@@ -31,13 +47,24 @@ export default {
 @import '../styles/variables.scss';
 
 #firebaseui-auth-container {
-  width: 10rem;
-  height: 10rem;
+  width: 5rem;
+  height: 5rem;
+}
 
-  .yello {
-    span {
-      color: red;
-    }
+.yello {
+  span {
+    color: red;
+  }
+}
+
+.increment-container {
+  position: absolute;
+  top: 40rem;
+
+  .store-increment {
+    width: 10rem;
+    height: 10rem;
+    background: white;
   }
 }
 </style>
