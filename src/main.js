@@ -13,12 +13,16 @@ Vue.config.productionTip = false
 
 const store = createStore()
 const router = createRouter()
+
+firebase.initializeApp(config)
+const db = firebase.database()
+const playersRef = db.ref('players')
 /* eslint-disable no-new */
 new Vue({
   store,
   router,
   created () {
-    firebase.initializeApp(config)
+    // firebase.initializeApp(config)
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$router.push('/home')
@@ -26,6 +30,9 @@ new Vue({
         this.$router.push('/')
       }
     })
+  },
+  firebase: {
+    players: playersRef
   },
   el: '#app',
   template: '<App/>',

@@ -37,6 +37,7 @@ export default {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
     }
+    console.log(this.user.uid)
   },
   methods: {
     logOut () {
