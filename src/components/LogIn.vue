@@ -18,10 +18,10 @@ import firebaseui from 'firebaseui'
 // import { config } from '../helpers/firebaseConfig'
 
 export default {
-  name: 'Auth',
+  name: 'LogIn',
   mounted () {
     var uiConfig = {
-      signInSuccessUrl: '/success',
+      signInSuccessUrl: '/',
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -49,6 +49,10 @@ export default {
 #firebaseui-auth-container {
   width: 5rem;
   height: 5rem;
+
+  .firebaseui-title {
+    color: red;
+  }
 }
 
 .yello {

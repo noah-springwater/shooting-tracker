@@ -33,6 +33,11 @@ export default {
       this.userId = this.user.uid
     }
   },
+  mounted () {
+    if (this.user) {
+      this.$store.commit('CURRENT_USER', this.user)
+    }
+  },
   methods: {
     logOut () {
       firebase.auth().signOut().then(
