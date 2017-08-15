@@ -9,10 +9,15 @@
     <p>{{userId}}</p>
     <hr>
     <pre>{{user}}</pre>
+    <hr>
+    <div class="addPlayerClass" v-on:click="addPlayer">
+    Add Player
+    </div>
   </div>
 </template>
 
 <script>
+// import firebase from '../main'
 import firebase from 'firebase'
 export default {
   data () {
@@ -26,6 +31,8 @@ export default {
   },
   created () {
     this.user = firebase.auth().currentUser
+    // const players = firebase.database().ref('players')
+
     if (this.user) {
       this.name = this.user.displayName
       this.email = this.user.email
@@ -37,12 +44,20 @@ export default {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
     }
-    // console.log(this.user.uid)
   },
   methods: {
     logOut () {
       firebase.auth().signOut().then(
         this.$router.go('/')
+      )
+    },
+    addPlayer () {
+      // console.log(this.$root.$firebaseRefs.players)
+      this.$root.$firebaseRefs.players.push(
+        {
+          'name': this.name,
+          'id': this.userId
+        }
       )
     }
   }

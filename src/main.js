@@ -7,8 +7,11 @@ import firebase from 'firebase'
 import { createStore } from './store'
 import { createRouter } from './router'
 import { config } from './helpers/firebaseConfig'
+import Vuefire from 'vuefire'
 
 Vue.use(Router)
+Vue.use(Vuefire)
+
 Vue.config.productionTip = false
 
 const store = createStore()
