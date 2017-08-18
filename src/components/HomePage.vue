@@ -13,6 +13,9 @@
     <div class="addPlayerClass" v-on:click="addPlayer">
     Add Player
     </div>
+    <div class="addDrill" v-on:click="addDrill">
+    Add Drill
+    </div>
   </div>
 </template>
 
@@ -26,7 +29,8 @@ export default {
       userId: '',
       name: '',
       email: '',
-      user: {}
+      user: {},
+      playerKey: ''
     }
   },
   created () {
@@ -53,12 +57,22 @@ export default {
     },
     addPlayer () {
       // console.log(this.$root.$firebaseRefs.players)
-      this.$root.$firebaseRefs.players.push(
+      let addPlayerCall = this.$root.$firebaseRefs.playersRef.push(
         {
           'name': this.name,
-          'id': this.userId
+          'id': this.userId,
+          'drills': null
         }
       )
+
+      let playerKey = addPlayerCall.key
+      console.log(playerKey)
+      this.playerKey = playerKey
+    },
+    addDrill () {
+      this.$root.$firebaseRefs.drillsRef.push({
+        'drill_name': 'fivespot'
+      })
     }
   }
 }
