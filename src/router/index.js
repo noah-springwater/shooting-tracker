@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import LogIn from '../components/LogIn'
-import HomePage from '../components/HomePage'
 
 Vue.use(Router)
 
@@ -10,11 +8,11 @@ export function createRouter () {
     routes: [
       {
         path: '/',
-        component: LogIn
+        component: () => import('@/components/LogIn')
       },
       {
-        path: '/home',
-        component: HomePage
+        path: '/home/:id',
+        component: () => import('@/components/HomePage')
       }
     ]
   })

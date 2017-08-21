@@ -15,6 +15,12 @@ export function createStore () {
       },
       CURRENT_USER: (state, user) => {
         state.currentUser = user
+      },
+      USER_FIRST_NAME: (state, firstName) => {
+        state.firstName = firstName
+      },
+      USER_LAST_NAME: (state, lastName) => {
+        state.lastName = lastName
       }
     }
   })

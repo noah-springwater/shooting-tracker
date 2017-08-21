@@ -10,11 +10,12 @@
     <hr>
     <pre>{{user}}</pre>
     <hr>
-    <div class="addPlayerClass" v-on:click="addPlayer">
-    Add Player
-    </div>
-    <div class="addDrill" v-on:click="addDrill">
+    <div class="addDrill" v-on:click="">
     Add Drill
+    </div>
+
+    <div class="player" v-for="player in this.$root.playersRef">
+      <span>{{ player.first_name }}</span>
     </div>
   </div>
 </template>
@@ -22,16 +23,26 @@
 <script>
 // import firebase from '../main'
 import firebase from 'firebase'
+const drillTest = firebase.database().ref('players/')
+console.log(this.$store.state.firstName)
+
 export default {
   data () {
     return {
       photo: '',
       userId: '',
       name: '',
+      firstName: '',
+      lastName: '',
+      playerNumber: '',
       email: '',
       user: {},
-      playerKey: ''
+      playerKey: '',
+      id: this.$route.params.id
     }
+  },
+  firebase: {
+    drillTest
   },
   created () {
     this.user = firebase.auth().currentUser
@@ -43,31 +54,61 @@ export default {
       this.photo = this.user.photoURL
       this.userId = this.user.uid
     }
+
+    this.splitName()
   },
   mounted () {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
+      this.checkPlayer()
     }
   },
   methods: {
+    splitName () {
+      let split = this.name.split(' ')
+      this.firstName = split[0]
+      this.lastName = split[1]
+      this.$store.commit('USER_FIRST_NAME', this.firstName)
+      this.$store.commit('USER_LAST_NAME', this.lastName)
+    },
     logOut () {
       firebase.auth().signOut().then(
         this.$router.go('/')
       )
     },
-    addPlayer () {
-      // console.log(this.$root.$firebaseRefs.players)
-      let addPlayerCall = this.$root.$firebaseRefs.playersRef.push(
-        {
-          'name': this.name,
+    checkPlayer () {
+      let user = firebase.auth().currentUser
+      if (user) {
+        this.$root.$firebaseRefs.playersRef.child(user.displayName).set({
+          'first_name': this.firstName,
+          'last_name': this.lastName,
+          'number': this.playerNumber,
           'id': this.userId,
           'drills': null
-        }
-      )
-
-      let playerKey = addPlayerCall.key
-      console.log(playerKey)
-      this.playerKey = playerKey
+        })
+      }
+      // this.$root.$firebaseRefs.playersRef.push(
+      //   {
+      //     'first_name': this.firstName,
+      //     'last_name': this.lastName,
+      //     'number': this.playerNumber,
+      //     'id': this.userId,
+      //     'drills': null
+      //   }
+      // )
+      let query = this.$root.$firebaseRefs.playersRef.orderByKey()
+      query.once('value')
+      .then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          let key = childSnapshot.key
+          let childData = childSnapshot.val().last_name
+          console.log(childData)
+          console.log(key)
+        })
+      })
+      // let playerKey = addPlayerCall.key
+      // console.log(playerKey)
+      // this.playerKey = playerKey
     },
     addDrill () {
       this.$root.$firebaseRefs.drillsRef.push({

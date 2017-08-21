@@ -15,7 +15,6 @@
 <script>
 import firebase from 'firebase'
 import firebaseui from 'firebaseui'
-// import { config } from '../helpers/firebaseConfig'
 
 export default {
   name: 'LogIn',
