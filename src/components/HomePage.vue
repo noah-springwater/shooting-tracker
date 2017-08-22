@@ -24,6 +24,7 @@
 // import firebase from '../main'
 import firebase from 'firebase'
 const drillTest = firebase.database().ref('players/')
+'hi'
 
 export default {
   data () {
