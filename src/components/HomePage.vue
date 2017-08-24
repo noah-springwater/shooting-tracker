@@ -10,20 +10,25 @@
     <hr>
     <pre>{{user}}</pre>
     <hr>
-    <div class="addDrill" v-on:click="">
+    <div class="addDrill" v-on:click="addDrill">
     Add Drill
     </div>
-
+    <!-- <select @input="setCurrentDrill">
+      <option value="Five Spot">Five Spot</option>
+      <option value="Spot 25">Spot 25</option>
+      <option value="Free Throws">Free Throws</option>
+    </select> -->
+    <span @click="setCurrentDrill">Five Spot</span>
+    <span @click="setCurrentDrill">Spot 25</span>
+    <span @click="setCurrentDrill">Free Throws</span>
     <div class="player" v-for="player in this.$root.playersRef">
-      <span>{{ player.first_name }}</span>
+      <pre>{{ player.drills }}</pre>
     </div>
   </div>
 </template>
 
 <script>
-// import firebase from '../main'
 import firebase from 'firebase'
-const drillTest = firebase.database().ref('players/')
 
 export default {
   data () {
@@ -37,11 +42,14 @@ export default {
       email: '',
       user: {},
       playerKey: '',
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      currentDrill: ''
     }
   },
-  firebase: {
-    drillTest
+  firebase () {
+    return {
+      drillTest: firebase.database().ref('players')
+    }
   },
   created () {
     this.user = firebase.auth().currentUser
@@ -86,15 +94,6 @@ export default {
           'drills': null
         })
       }
-      // this.$root.$firebaseRefs.playersRef.push(
-      //   {
-      //     'first_name': this.firstName,
-      //     'last_name': this.lastName,
-      //     'number': this.playerNumber,
-      //     'id': this.userId,
-      //     'drills': null
-      //   }
-      // )
       let query = this.$root.$firebaseRefs.playersRef.orderByKey()
       query.once('value')
       .then(function (snapshot) {
@@ -105,14 +104,19 @@ export default {
           console.log(key)
         })
       })
-      // let playerKey = addPlayerCall.key
-      // console.log(playerKey)
-      // this.playerKey = playerKey
     },
     addDrill () {
-      this.$root.$firebaseRefs.drillsRef.push({
-        'drill_name': 'fivespot'
-      })
+      let user = firebase.auth().currentUser
+      if (user) {
+        console.log(this.name)
+        firebase.database().ref('players/' + this.name + '/drills').push({
+          'drill_name': this.$store.state.currentDrill,
+          'sup': 'homie'
+        })
+      }
+    },
+    setCurrentDrill (e) {
+      this.$store.commit('CURRENT_DRILL', e.target.innerHTML)
     }
   }
 }

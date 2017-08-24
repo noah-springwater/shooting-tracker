@@ -7,7 +7,8 @@ export function createStore () {
   return new Vuex.Store({
     state: {
       count: 0,
-      currentUser: {}
+      currentUser: {},
+      currentDrill: ''
     },
     mutations: {
       INCREMENT: (state, payload) => {
@@ -21,6 +22,9 @@ export function createStore () {
       },
       USER_LAST_NAME: (state, lastName) => {
         state.lastName = lastName
+      },
+      CURRENT_DRILL: (state, drillName) => {
+        state.currentDrill = drillName
       }
     }
   })
