@@ -3,26 +3,14 @@
     <h1>Signup succeeded</h1>
     <button @click='logOut'>Log out</button>
     <hr>
-    <img :src="photo" style="height: 120px"><br>
-    <p>{{name}}</p>
-    <p>{{email}}</p>
-    <p>{{userId}}</p>
-    <hr>
-    <pre>{{user}}</pre>
-    <hr>
-    <div class="addDrill" v-on:click="addDrill">
-    Add Drill
+    <input type="text" v-model="drillHolder">
+    <div class="button" @click="pushDrillToArray">
+      Push Drill
     </div>
-    <!-- <select @input="setCurrentDrill">
-      <option value="Five Spot">Five Spot</option>
-      <option value="Spot 25">Spot 25</option>
-      <option value="Free Throws">Free Throws</option>
-    </select> -->
-    <span @click="setCurrentDrill">Five Spot</span>
-    <span @click="setCurrentDrill">Spot 25</span>
-    <span @click="setCurrentDrill">Free Throws</span>
-    <div class="player" v-for="player in this.$root.playersRef">
-      <pre>{{ player.drills }}</pre>
+    <span>ADD DRILL</span>
+
+    <div class="drills-container">
+      <span class="drill" @click="toggleSelected()" v-for="drill in this.drillList" v-bind:class="{ 'drill-selected': selectDrill }">{{ drill }}</span>
     </div>
   </div>
 </template>
@@ -41,27 +29,21 @@ export default {
       playerNumber: '',
       email: '',
       user: {},
-      playerKey: '',
       id: this.$route.params.id,
-      currentDrill: ''
+      currentDrill: '',
+      drillsRef: '',
+      drillHolder: '',
+      selectDrill: false,
+      drillList: []
     }
   },
   firebase () {
     return {
-      drillTest: firebase.database().ref('players')
+      drillTest: firebase.database().ref('players/' + this.name + '/' + this.currentDrill)
     }
   },
   created () {
-    this.user = firebase.auth().currentUser
-    // const players = firebase.database().ref('players')
-
-    if (this.user) {
-      this.name = this.user.displayName
-      this.email = this.user.email
-      this.photo = this.user.photoURL
-      this.userId = this.user.uid
-    }
-
+    this.setUserAttributes()
     this.splitName()
   },
   mounted () {
@@ -71,6 +53,22 @@ export default {
     }
   },
   methods: {
+    toggleSelected () {
+      this.selectDrill = !this.selectDrill
+    },
+    pushDrillToArray () {
+      this.drillList.push(this.drillHolder)
+    },
+    setUserAttributes () {
+      this.user = firebase.auth().currentUser
+
+      if (this.user) {
+        this.name = this.user.displayName
+        this.email = this.user.email
+        this.photo = this.user.photoURL
+        this.userId = this.user.uid
+      }
+    },
     splitName () {
       let split = this.name.split(' ')
       this.firstName = split[0]
@@ -91,33 +89,24 @@ export default {
           'last_name': this.lastName,
           'number': this.playerNumber,
           'id': this.userId,
-          'drills': null
+          'drills': 0
         })
       }
-      let query = this.$root.$firebaseRefs.playersRef.orderByKey()
-      query.once('value')
-      .then(function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-          let key = childSnapshot.key
-          let childData = childSnapshot.val().last_name
-          console.log(childData)
-          console.log(key)
-        })
-      })
     },
     addDrill () {
       let user = firebase.auth().currentUser
+
       if (user) {
-        console.log(this.name)
-        firebase.database().ref('players/' + this.name + '/drills').push({
+        this.drillsRef = firebase.database().ref('players/' + this.name + '/drills')
+        this.drillsRef.child(this.$store.state.currentDrill).set({
           'drill_name': this.$store.state.currentDrill,
-          'sup': 'homie'
+          'sup': 'hello'
         })
       }
-    },
-    setCurrentDrill (e) {
-      this.$store.commit('CURRENT_DRILL', e.target.innerHTML)
     }
+    // setCurrentDrill (e) {
+    //   this.$store.commit('CURRENT_DRILL', e.target.innerHTML)
+    // }
   }
 }
 </script>
@@ -125,4 +114,11 @@ export default {
 <style lang="scss">
 @import '../styles/variables.scss';
 
+.drills-container {
+  .drill {
+    &.drill-selected {
+      color: red;
+    }
+  }
+}
 </style>
