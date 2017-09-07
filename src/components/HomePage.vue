@@ -3,25 +3,21 @@
     <h1>Signup succeeded</h1>
     <button @click='logOut'>Log out</button>
     <hr>
-    <input type="text" v-model="drillHolder">
-    <div class="button" @click="pushDrillToArray">
-      Push Drill
-    </div>
-    <span>ADD DRILL</span>
-
-    <div class="drills-container">
-      <span class="drill" @click="toggleSelected()" v-for="drill in this.drillList" v-bind:class="{ 'drill-selected': selectDrill }">{{ drill }}</span>
-    </div>
+    <AddDrill />
   </div>
 </template>
 
 <script>
+import AddDrill from './AddDrill'
 import firebase from 'firebase'
+// let user = firebase.auth().currentUser
 
 export default {
+  components: {
+    AddDrill
+  },
   data () {
     return {
-      photo: '',
       userId: '',
       name: '',
       firstName: '',
@@ -31,15 +27,9 @@ export default {
       user: {},
       id: this.$route.params.id,
       currentDrill: '',
-      drillsRef: '',
-      drillHolder: '',
       selectDrill: false,
-      drillList: []
-    }
-  },
-  firebase () {
-    return {
-      drillTest: firebase.database().ref('players/' + this.name + '/' + this.currentDrill)
+      drillList: [],
+      test: this.$store.state.currentUser.displayName
     }
   },
   created () {
@@ -49,23 +39,25 @@ export default {
   mounted () {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
-      this.checkPlayer()
+      let dbRef = this.$root.$firebaseRefs.teamsRef
+      // let that = this
+      dbRef.once('value').then(function (snapshot) {
+        console.log(snapshot.child('teams'))
+        // if (snapshot.hasChild(that.name)) {
+        //   console.log('has child')
+        // } else {
+        //   that.writePlayer()
+        // }
+      })
     }
   },
   methods: {
-    toggleSelected () {
-      this.selectDrill = !this.selectDrill
-    },
-    pushDrillToArray () {
-      this.drillList.push(this.drillHolder)
-    },
     setUserAttributes () {
       this.user = firebase.auth().currentUser
 
       if (this.user) {
         this.name = this.user.displayName
         this.email = this.user.email
-        this.photo = this.user.photoURL
         this.userId = this.user.uid
       }
     },
@@ -80,32 +72,26 @@ export default {
       firebase.auth().signOut().then(
         this.$router.go('/')
       )
-    },
-    checkPlayer () {
-      let user = firebase.auth().currentUser
-      if (user) {
-        this.$root.$firebaseRefs.playersRef.child(user.displayName).set({
-          'first_name': this.firstName,
-          'last_name': this.lastName,
-          'number': this.playerNumber,
-          'id': this.userId,
-          'drills': 0
-        })
-      }
-    },
-    addDrill () {
-      let user = firebase.auth().currentUser
-
-      if (user) {
-        this.drillsRef = firebase.database().ref('players/' + this.name + '/drills')
-        this.drillsRef.child(this.$store.state.currentDrill).set({
-          'drill_name': this.$store.state.currentDrill,
-          'sup': 'hello'
-        })
-      }
     }
-    // setCurrentDrill (e) {
-    //   this.$store.commit('CURRENT_DRILL', e.target.innerHTML)
+    // writePlayer () {
+    //   if (user) {
+    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).set({
+    //       'first_name': this.firstName,
+    //       'last_name': this.lastName,
+    //       'number': this.playerNumber,
+    //       'id': this.userId,
+    //       'drills': false
+    //     })
+    //   }
+    // }
+    // addDrill () {
+    //   console.log('prefire')
+    //   if (user) {
+    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).child('drills').push({
+    //       'fivespot': 23
+    //     })
+    //   }
+    //   console.log('post fire')
     // }
   }
 }
