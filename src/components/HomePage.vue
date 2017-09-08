@@ -40,12 +40,13 @@ export default {
   mounted () {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
-      let allTeams = this.$root.$firebaseRefs.teamsRef
+      let dbRef = this.$root.$firebaseRefs.teamsRef
       let that = this
-      allTeams.once('value').then(function (snapshot) {
-        console.log(snapshot)
-        if (snapshot.hasChild(that.name)) {
-          console.log(snapshot.child(that.$store.state.currentTeam).key)
+      dbRef.once('value').then(function (snapshot) {
+        // console.log(that.$store.state.currentTeam)
+        console.log(snapshot.child(that.$store.state.currentTeam).hasChild(that.name))
+        if (snapshot.child(that.$store.state.currentTeam).hasChild(that.name)) {
+          console.log('has child')
         } else {
           that.writePlayer()
         }
@@ -75,24 +76,31 @@ export default {
       )
     },
     setTeam () {
-      let emailType = user.email.split('@')[1]
-
-      if (emailType === 'gmail.com') {
+      let teamEmail = user.email.split('@')[1]
+      if (teamEmail === 'gmail.com') {
         this.$store.commit('CURRENT_TEAM', 'University of San Francisco')
       }
-    },
-    writePlayer () {
-      if (user) {
-        this.$root.$firebaseRefs.teamsRef.child(this.$store.state.currentTeam).child(user.displayName).set({
-          'first_name': this.firstName,
-          'last_name': this.lastName,
-          'number': this.playerNumber,
-          'id': this.userId,
-          'is_player': true,
-          'drills': false
-        })
-      }
     }
+    // writePlayer () {
+    //   if (user) {
+    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).set({
+    //       'first_name': this.firstName,
+    //       'last_name': this.lastName,
+    //       'number': this.playerNumber,
+    //       'id': this.userId,
+    //       'drills': false
+    //     })
+    //   }
+    // }
+    // addDrill () {
+    //   console.log('prefire')
+    //   if (user) {
+    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).child('drills').push({
+    //       'fivespot': 23
+    //     })
+    //   }
+    //   console.log('post fire')
+    // }
   }
 }
 </script>
