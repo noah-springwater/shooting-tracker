@@ -5,8 +5,8 @@
       <span @click="addDrill">Push Drill</span>
     </div>
     <div class="drills-container">
-      <div v-for="team in this.list">
-        <span>{{ team }}</span>
+      <div v-for="team in this.$root.teamsRef[1]">
+          <pre>{{ team }}</pre>
       </div>
     </div>
   </div>
@@ -21,11 +21,10 @@ export default {
   data () {
     return {
       drillHolder: '',
-      list: ['hello', 'hi']
+      list: ['hello', 'hi'],
+      vassarPlayers: this.$root.teamsRef[1],
+      player: 'Johnny Mrlik'
     }
-  },
-  created () {
-
   },
   mounted () {
     // for (let i = 0; i < this.$root.drillsRef.length; i++) {

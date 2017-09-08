@@ -38,6 +38,11 @@ new Vue({
   firebase: {
     teamsRef
   },
+  watch: {
+    teamsRef () {
+      console.log('change deteched...')
+    }
+  },
   el: '#app',
   template: '<App/>',
   components: { App }

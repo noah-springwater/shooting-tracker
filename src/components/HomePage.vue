@@ -40,12 +40,11 @@ export default {
   mounted () {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
-      let dbRef = this.$root.$firebaseRefs.teamsRef
+      let allTeams = this.$root.$firebaseRefs.teamsRef
       let that = this
-      dbRef.once('value').then(function (snapshot) {
-        // console.log(that.$store.state.currentTeam)
+      allTeams.once('value').then(function (snapshot) {
         console.log(snapshot.child(that.$store.state.currentTeam).hasChild(that.name))
-        if (snapshot.child(that.$store.state.currentTeam).hasChild(that.name)) {
+        if (snapshot.child(that.$store.state.currentTeam).child('players').hasChild(that.name)) {
           console.log('has child')
         } else {
           that.writePlayer()
@@ -80,18 +79,18 @@ export default {
       if (teamEmail === 'gmail.com') {
         this.$store.commit('CURRENT_TEAM', 'University of San Francisco')
       }
+    },
+    writePlayer () {
+      if (user) {
+        this.$root.$firebaseRefs.teamsRef.child(this.$store.state.currentTeam).child('players').child(user.displayName).set({
+          'first_name': this.firstName,
+          'last_name': this.lastName,
+          'number': this.playerNumber,
+          'id': this.userId,
+          'drills': false
+        })
+      }
     }
-    // writePlayer () {
-    //   if (user) {
-    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).set({
-    //       'first_name': this.firstName,
-    //       'last_name': this.lastName,
-    //       'number': this.playerNumber,
-    //       'id': this.userId,
-    //       'drills': false
-    //     })
-    //   }
-    // }
     // addDrill () {
     //   console.log('prefire')
     //   if (user) {

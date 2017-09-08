@@ -10,7 +10,8 @@ export function createStore () {
       currentUser: {},
       currentDrill: '',
       listOfDrills: [],
-      currentTeam: ''
+      currentTeam: '',
+      player: 'Johnny Mrlik'
     },
     mutations: {
       INCREMENT: (state, payload) => {
