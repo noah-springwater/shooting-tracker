@@ -20,8 +20,6 @@ const router = createRouter()
 firebase.initializeApp(config)
 const db = firebase.database()
 const teamsRef = db.ref('teams')
-// const playersRef = db.ref('teams/players')
-// const drillsRef = db.ref('teams/players/drills')
 
 /* eslint-disable no-new */
 new Vue({
@@ -39,8 +37,6 @@ new Vue({
   },
   firebase: {
     teamsRef
-    // playersRef,
-    // drillsRef
   },
   el: '#app',
   template: '<App/>',

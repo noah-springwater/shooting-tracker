@@ -10,7 +10,7 @@
 <script>
 import AddDrill from './AddDrill'
 import firebase from 'firebase'
-// let user = firebase.auth().currentUser
+let user = firebase.auth().currentUser
 
 export default {
   components: {
@@ -35,19 +35,20 @@ export default {
   created () {
     this.setUserAttributes()
     this.splitName()
+    this.setTeam()
   },
   mounted () {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
-      let dbRef = this.$root.$firebaseRefs.teamsRef
-      // let that = this
-      dbRef.once('value').then(function (snapshot) {
-        console.log(snapshot.child('teams'))
-        // if (snapshot.hasChild(that.name)) {
-        //   console.log('has child')
-        // } else {
-        //   that.writePlayer()
-        // }
+      let allTeams = this.$root.$firebaseRefs.teamsRef
+      let that = this
+      allTeams.once('value').then(function (snapshot) {
+        console.log(snapshot)
+        if (snapshot.hasChild(that.name)) {
+          console.log(snapshot.child(that.$store.state.currentTeam).key)
+        } else {
+          that.writePlayer()
+        }
       })
     }
   },
@@ -72,27 +73,26 @@ export default {
       firebase.auth().signOut().then(
         this.$router.go('/')
       )
+    },
+    setTeam () {
+      let emailType = user.email.split('@')[1]
+
+      if (emailType === 'gmail.com') {
+        this.$store.commit('CURRENT_TEAM', 'University of San Francisco')
+      }
+    },
+    writePlayer () {
+      if (user) {
+        this.$root.$firebaseRefs.teamsRef.child(this.$store.state.currentTeam).child(user.displayName).set({
+          'first_name': this.firstName,
+          'last_name': this.lastName,
+          'number': this.playerNumber,
+          'id': this.userId,
+          'is_player': true,
+          'drills': false
+        })
+      }
     }
-    // writePlayer () {
-    //   if (user) {
-    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).set({
-    //       'first_name': this.firstName,
-    //       'last_name': this.lastName,
-    //       'number': this.playerNumber,
-    //       'id': this.userId,
-    //       'drills': false
-    //     })
-    //   }
-    // }
-    // addDrill () {
-    //   console.log('prefire')
-    //   if (user) {
-    //     this.$root.$firebaseRefs.playersRef.child(user.displayName).child('drills').push({
-    //       'fivespot': 23
-    //     })
-    //   }
-    //   console.log('post fire')
-    // }
   }
 }
 </script>

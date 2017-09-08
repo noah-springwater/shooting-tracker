@@ -9,7 +9,8 @@ export function createStore () {
       count: 0,
       currentUser: {},
       currentDrill: '',
-      listOfDrills: []
+      listOfDrills: [],
+      currentTeam: ''
     },
     mutations: {
       INCREMENT: (state, payload) => {
@@ -29,6 +30,9 @@ export function createStore () {
       },
       ADD_DRILL: (state, newDrill) => {
         state.listOfDrills.push(newDrill)
+      },
+      CURRENT_TEAM: (state, team) => {
+        state.currentTeam = team
       }
     }
   })

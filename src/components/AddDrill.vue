@@ -5,23 +5,23 @@
       <span @click="addDrill">Push Drill</span>
     </div>
     <div class="drills-container">
-      <div v-for="drill in this.$root.drillsRef">
-        <span>{{ drill.drill }}</span>
+      <div v-for="team in this.list">
+        <span>{{ team }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import firebase from 'firebase'
-// let user = firebase.auth().currentUser
+import firebase from 'firebase'
+let user = firebase.auth().currentUser
 // const db = firebase.database()
 
 export default {
   data () {
     return {
       drillHolder: '',
-      drillList: this.$root.drillsRef
+      list: ['hello', 'hi']
     }
   },
   created () {
@@ -31,15 +31,15 @@ export default {
     // for (let i = 0; i < this.$root.drillsRef.length; i++) {
     //   this.drillList.push(this.$root.drillsRef[i])
     // }
-    console.log(this.drillList)
+    // console.log(this.drillList)
   },
   methods: {
     addDrill () {
-      let getDrills = this.$root.$firebaseRefs.drillsRef
+      let getDrills = this.$root.$firebaseRefs.teamsRef.child(this.$store.state.currentTeam).child(user.displayName).child('drills')
       this.$store.commit('ADD_DRILL', this.drillHolder)
       console.log(getDrills)
-      this.$root.$firebaseRefs.drillsRef.push({
-        'drill': this.drillHolder
+      getDrills.push({
+        [this.drillHolder]: false
       })
     }
   }
