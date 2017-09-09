@@ -26,11 +26,17 @@ export default {
       player: 'Johnny Mrlik'
     }
   },
-  mounted () {
-    // for (let i = 0; i < this.$root.drillsRef.length; i++) {
-    //   this.drillList.push(this.$root.drillsRef[i])
-    // }
-    // console.log(this.drillList)
+  created () {
+    let allTeams = this.$root.$firebaseRefs.teamsRef
+    // let that = this
+    allTeams.once('value').then(function (snapshot) {
+      snapshot.forEach(function (childSnapshot) {
+        // let key = childSnapshot.key
+        // console.log(key)
+        let childData = childSnapshot.child('players').child('Vassar College').child('players')
+        console.log(childData)
+      })
+    })
   },
   methods: {
     addDrill () {
