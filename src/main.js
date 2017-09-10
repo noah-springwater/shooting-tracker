@@ -26,7 +26,6 @@ new Vue({
   store,
   router,
   created () {
-    // firebase.initializeApp(config)
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$router.push('/home/' + user.uid)
