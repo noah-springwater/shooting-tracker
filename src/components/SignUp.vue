@@ -1,10 +1,10 @@
 <template>
-  <div class="login">
-    <h3>Sign In</h3>
+  <div class="sign-up">
+    <p>Let's create a new account!</p>
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="text" v-model="password" placeholder="Password"><br>
-    <button v-on:click="signIn">Connection</button>
-    <p>You don't have an account. You can <router-link to="/sign-up">create one</router-link></p>
+    <button v-on:click="signUp">Sign Up</button>
+    <span>or go back to <router-link to="/">login.</router-link></span>
   </div>
 </template>
 
@@ -12,7 +12,7 @@
 import firebase from 'firebase'
 
 export default {
-  name: 'login',
+  name: 'signUp',
   data () {
     return {
       email: '',
@@ -20,8 +20,8 @@ export default {
     }
   },
   methods: {
-    signIn () {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+    signUp () {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           this.$router.replace('home/:id')
         }).catch(
@@ -37,7 +37,7 @@ export default {
 <style lang="scss">
 @import '../styles/variables.scss';
 
-.login {
+.sign-up {
 
   input {
     margin: 1rem 0;
@@ -46,19 +46,15 @@ export default {
   }
 
   button {
-    margin-top: 2rem;
+    margin-top: 1rem;
     width: 10%;
     cursor: pointer;
   }
 
-  p {
-    margin-top: 4rem;
-    font-size: 1.3rem;
-
-    a {
-      text-decoration: underline;
-      cursor: pointer;
-    }
+  span {
+    display: block;
+    margin-top: 2rem;
+    font-size: 1.1rem;
   }
 }
 </style>

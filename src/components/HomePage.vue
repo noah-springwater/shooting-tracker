@@ -19,9 +19,9 @@ export default {
   data () {
     return {
       userId: '',
-      name: '',
-      firstName: '',
-      lastName: '',
+      // name: '',
+      // firstName: '',
+      // lastName: '',
       playerNumber: '',
       email: '',
       user: {},
@@ -34,7 +34,7 @@ export default {
   },
   created () {
     this.setUserAttributes()
-    this.splitName()
+    // this.splitName()
     this.setTeam()
   },
   mounted () {
@@ -62,17 +62,17 @@ export default {
         this.userId = this.user.uid
       }
     },
-    splitName () {
-      let split = this.name.split(' ')
-      this.firstName = split[0]
-      this.lastName = split[1]
-      this.$store.commit('USER_FIRST_NAME', this.firstName)
-      this.$store.commit('USER_LAST_NAME', this.lastName)
-    },
+    // splitName () {
+    //   let split = this.name.split(' ')
+    //   this.firstName = split[0]
+    //   this.lastName = split[1]
+    //   this.$store.commit('USER_FIRST_NAME', this.firstName)
+    //   this.$store.commit('USER_LAST_NAME', this.lastName)
+    // },
     logOut () {
-      firebase.auth().signOut().then(
-        this.$router.go('/')
-      )
+      firebase.auth().signOut().then(() => {
+        this.$router.replace('/')
+      })
     },
     setTeam () {
       let teamEmail = user.email.split('@')[1]

@@ -6,7 +6,6 @@ Vue.use(Vuex)
 export function createStore () {
   return new Vuex.Store({
     state: {
-      count: 0,
       currentUser: {},
       currentDrill: '',
       listOfDrills: [],
@@ -14,9 +13,6 @@ export function createStore () {
       player: 'Johnny Mrlik'
     },
     mutations: {
-      INCREMENT: (state, payload) => {
-        state.count += payload.amount
-      },
       CURRENT_USER: (state, user) => {
         state.currentUser = user
       },

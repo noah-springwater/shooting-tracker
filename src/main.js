@@ -5,7 +5,7 @@ import App from './App.vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
 import { createStore } from './store'
-import { createRouter } from './router'
+import router from './router'
 import { config } from './helpers/firebaseConfig'
 import Vuefire from 'vuefire'
 
@@ -15,34 +15,37 @@ Vue.use(Vuefire)
 Vue.config.productionTip = false
 
 const store = createStore()
-const router = createRouter()
-
+let app
 firebase.initializeApp(config)
 const db = firebase.database()
 const teamsRef = db.ref('teams')
 
-/* eslint-disable no-new */
-new Vue({
-  store,
-  router,
-  created () {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.$router.push('/home/' + user.uid)
-      } else {
-        this.$router.push('/')
-      }
+firebase.auth().onAuthStateChanged(function (user) {
+  if (!app) {
+    app = new Vue({
+      store,
+      router,
+      created () {
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            this.$router.push('/home/' + user.uid)
+          } else {
+            this.$router.push('/')
+          }
+        })
+      },
+      firebase: {
+        teamsRef
+      },
+      watch: {
+        teamsRef () {
+          console.log('change deteched...')
+        }
+      },
+      el: '#app',
+      template: '<App/>',
+      components: { App }
     })
-  },
-  firebase: {
-    teamsRef
-  },
-  watch: {
-    teamsRef () {
-      console.log('change deteched...')
-    }
-  },
-  el: '#app',
-  template: '<App/>',
-  components: { App }
+  }
 })
+/* eslint-disable no-new */
