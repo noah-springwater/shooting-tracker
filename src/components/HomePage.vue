@@ -41,17 +41,18 @@ export default {
     if (this.user) {
       this.$store.commit('CURRENT_USER', this.user)
       let allTeams = this.$root.$firebaseRefs.teamsRef
-      let that = this
-      allTeams.once('value').then(function (snapshot) {
-        console.log(snapshot.child(that.$store.state.currentTeam).hasChild(that.name))
-        if (snapshot.child(that.$store.state.currentTeam).child('players').hasChild(that.name)) {
+
+      allTeams.once('value').then((snapshot) => {
+        console.log(snapshot.child(this.$store.state.currentTeam).hasChild(this.name))
+        if (snapshot.child(this.$store.state.currentTeam).child('players').hasChild(this.name)) {
           console.log('has child')
         } else {
-          that.writePlayer()
+          this.writePlayer()
         }
       })
     }
   },
+
   methods: {
     setUserAttributes () {
       this.user = firebase.auth().currentUser
