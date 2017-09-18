@@ -20,10 +20,19 @@ export function createStore () {
 
         if (user) {
           let setEmail = user.email.split('@')[1]
-          if (setEmail === 'gmail.com') {
-            commit('CURRENT_TEAM', 'USF')
-          } else {
-            commit('CURRENT_TEAM', 'Vassar')
+
+          switch (setEmail) {
+            case 'gmail.com':
+              commit('CURRENT_TEAM', 'USF')
+              break
+
+            case 'yahoo.com':
+              commit('CURRENT_TEAM', 'Vassar')
+              break
+
+            default:
+              commit('CURRENT_TEAM', '')
+              break
           }
         } else {
           commit('CURRENT_TEAM', null)
