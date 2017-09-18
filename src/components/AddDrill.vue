@@ -23,13 +23,15 @@ export default {
     }
   },
   created () {
-    let allTeams = this.$root.$firebaseRefs.teamsRef
-    allTeams.once('value').then((snapshot) => {
-      let allVassarPlayers = snapshot.child(this.$store.state.currentTeam).child('players')
-      allVassarPlayers.forEach((childSnapshot) => {
-        this.playerNames.push(childSnapshot.child('first_name').val())
-      })
-    })
+    // let allTeams = this.$root.$firebaseRefs.teamsRef
+    // allTeams.once('value').then((snapshot) => {
+    //   // console.log(this.$store.state)
+    //   // console.log(snapshot.child(this.$store.state.currentTeam))
+    //   let allVassarPlayers = snapshot.child(this.$store.state.currentTeam).child('players')
+    //   allVassarPlayers.forEach((childSnapshot) => {
+    //     this.playerNames.push(childSnapshot.child('first_name').val())
+    //   })
+    // })
   }
 }
 </script>

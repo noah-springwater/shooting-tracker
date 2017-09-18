@@ -10,7 +10,7 @@
 <script>
 import AddDrill from './AddDrill'
 import firebase from 'firebase'
-let user = firebase.auth().currentUser
+// let user = firebase.auth().currentUser
 
 export default {
   components: {
@@ -26,8 +26,14 @@ export default {
     }
   },
   created () {
+    // this.user = firebase.auth().currentUser
     this.setUserAttributes()
-    this.setTeam()
+    // console.log(this.$store.state.currentUser.email)
+    // this.$store.commit('CURRENT_USER', user)
+
+    // if (this.$store.getters.getCurrentUser) {
+    //   console.log(this.$store.getters.getCurrentUser.email)
+    // }
   },
   mounted () {
   },
@@ -45,15 +51,6 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.replace('/')
       })
-    },
-    setTeam () {
-      let teamEmail = user.email.split('@')[1]
-      console.log(teamEmail)
-      if (teamEmail === 'gmail.com') {
-        this.$store.commit('CURRENT_TEAM', 'Vassar College')
-      } else {
-        this.$store.commit('CURRENT_TEAM', 'University of San Francisco')
-      }
     }
   }
 }

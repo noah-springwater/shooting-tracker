@@ -29,18 +29,15 @@ firebase.auth().onAuthStateChanged(function (user) {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             this.$router.push('/home/' + user.uid)
+            this.$store.commit('CURRENT_USER', user)
           } else {
             this.$router.push('/')
+            this.$store.commit('CURRENT_USER', null)
           }
         })
       },
       firebase: {
         teamsRef
-      },
-      watch: {
-        teamsRef () {
-          console.log('change deteched...')
-        }
       },
       el: '#app',
       template: '<App/>',

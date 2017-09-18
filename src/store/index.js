@@ -12,6 +12,11 @@ export function createStore () {
       currentTeam: '',
       player: 'Johnny Mrlik'
     },
+    getters: {
+      myUser: (state) => {
+        state.currentUser
+      }
+    },
     mutations: {
       CURRENT_USER: (state, user) => {
         state.currentUser = user
