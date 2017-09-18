@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import firebase from 'firebase'
 
 Vue.use(Vuex)
 
@@ -12,9 +13,21 @@ export function createStore () {
       currentTeam: '',
       player: 'Johnny Mrlik'
     },
-    getters: {
-      myUser: (state) => {
-        state.currentUser
+    actions: {
+      SET_USER_AND_TEAM: ({ commit }) => {
+        let user = firebase.auth().currentUser
+        commit('CURRENT_USER', user)
+
+        if (user) {
+          let setEmail = user.email.split('@')[1]
+          if (setEmail === 'gmail.com') {
+            commit('CURRENT_TEAM', 'USF')
+          } else {
+            commit('CURRENT_TEAM', 'Vassar')
+          }
+        } else {
+          commit('CURRENT_TEAM', null)
+        }
       }
     },
     mutations: {

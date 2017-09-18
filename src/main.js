@@ -27,12 +27,12 @@ firebase.auth().onAuthStateChanged(function (user) {
       router,
       created () {
         firebase.auth().onAuthStateChanged((user) => {
+          this.$store.dispatch('SET_USER_AND_TEAM')
+
           if (user) {
             this.$router.push('/home/' + user.uid)
-            this.$store.commit('CURRENT_USER', user)
           } else {
             this.$router.push('/')
-            this.$store.commit('CURRENT_USER', null)
           }
         })
       },
