@@ -11,7 +11,8 @@ export function createStore () {
       currentDrill: '',
       listOfDrills: [],
       currentTeam: '',
-      name: ''
+      name: 'Johnny Mrlik',
+      initialLogin: false
     },
     actions: {
       SET_USER_AND_TEAM: ({ commit }) => {
@@ -57,6 +58,13 @@ export function createStore () {
       },
       CURRENT_TEAM: (state, team) => {
         state.currentTeam = team
+      },
+      COMMIT_LOGIN: (state) => {
+        if (state.initialLogin === false) {
+          state.initialLogin = true
+        } else {
+          state.initialLogin = false
+        }
       }
     }
   })

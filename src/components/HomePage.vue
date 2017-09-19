@@ -4,7 +4,7 @@
     <button v-on:click='logOut'>Log out</button>
     <hr>
     <AddDrill />
-    <NewUserModal v-if='newUser'/>
+    <NewUserModal v-if="!newUser"/>
   </div>
 </template>
 
@@ -20,20 +20,15 @@ export default {
   },
   data () {
     return {
-      newUser: false
+      newUser: this.$store.state.initialLogin
     }
   },
-  created () {
-    let checkPlayers = this.$root.$firebaseRefs.teamsRef
-    checkPlayers.once('value').then((snapshot) => {
-      // let allPlayers = snapshot.child(this.$store.state.currentTeam).child('players')
-      // .child(this.$store.state.currentUser.email)
-      // console.log(allPlayers)
-    })
+  mounted () {
   },
   methods: {
     logOut () {
       firebase.auth().signOut().then(() => {
+        this.$store.commit('COMMIT_LOGIN')
         this.$router.replace('/')
       })
     }
