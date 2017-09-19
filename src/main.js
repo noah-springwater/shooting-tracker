@@ -27,6 +27,8 @@ firebase.auth().onAuthStateChanged(function (user) {
       router,
       created () {
         firebase.auth().onAuthStateChanged((user) => {
+          // this.$store.dispatch()
+
           this.$store.dispatch('SET_USER_AND_TEAM')
 
           if (user) {

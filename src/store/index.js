@@ -11,7 +11,7 @@ export function createStore () {
       currentDrill: '',
       listOfDrills: [],
       currentTeam: '',
-      player: 'Johnny Mrlik'
+      name: ''
     },
     actions: {
       SET_USER_AND_TEAM: ({ commit }) => {
@@ -23,11 +23,11 @@ export function createStore () {
 
           switch (setEmail) {
             case 'gmail.com':
-              commit('CURRENT_TEAM', 'USF')
+              commit('CURRENT_TEAM', 'University of San Francisco')
               break
 
             case 'yahoo.com':
-              commit('CURRENT_TEAM', 'Vassar')
+              commit('CURRENT_TEAM', 'Vassar College')
               break
 
             default:

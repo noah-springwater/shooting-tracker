@@ -4,49 +4,34 @@
     <button v-on:click='logOut'>Log out</button>
     <hr>
     <AddDrill />
+    <NewUserModal v-if='newUser'/>
   </div>
 </template>
 
 <script>
 import AddDrill from './AddDrill'
+import NewUserModal from './NewUserModal'
 import firebase from 'firebase'
-// let user = firebase.auth().currentUser
 
 export default {
   components: {
+    NewUserModal,
     AddDrill
   },
   data () {
     return {
-      userId: '',
-      email: '',
-      user: {},
-      id: this.$route.params.id,
-      drillList: []
+      newUser: false
     }
   },
   created () {
-    // this.user = firebase.auth().currentUser
-    this.setUserAttributes()
-    // console.log(this.$store.state.currentUser.email)
-    // this.$store.commit('CURRENT_USER', user)
-
-    // if (this.$store.getters.getCurrentUser) {
-    //   console.log(this.$store.getters.getCurrentUser.email)
-    // }
-  },
-  mounted () {
+    let checkPlayers = this.$root.$firebaseRefs.teamsRef
+    checkPlayers.once('value').then((snapshot) => {
+      // let allPlayers = snapshot.child(this.$store.state.currentTeam).child('players')
+      // .child(this.$store.state.currentUser.email)
+      // console.log(allPlayers)
+    })
   },
   methods: {
-    setUserAttributes () {
-      this.user = firebase.auth().currentUser
-
-      if (this.user) {
-        this.name = this.user.displayName
-        this.email = this.user.email
-        this.userId = this.user.uid
-      }
-    },
     logOut () {
       firebase.auth().signOut().then(() => {
         this.$router.replace('/')
