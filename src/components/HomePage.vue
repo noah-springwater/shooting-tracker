@@ -4,7 +4,7 @@
     <button v-on:click='logOut'>Log out</button>
     <hr>
     <AddDrill />
-    <NewUserModal v-if="!newUser"/>
+    <NewUserModal v-if="newUser"/>
   </div>
 </template>
 
@@ -28,7 +28,7 @@ export default {
   methods: {
     logOut () {
       firebase.auth().signOut().then(() => {
-        this.$store.commit('COMMIT_LOGIN')
+        this.$store.commit('SET_LOGIN')
         this.$router.replace('/')
       })
     }

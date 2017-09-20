@@ -26,7 +26,7 @@ export default {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           this.$router.replace('home/:id')
-          this.$store.commit('COMMIT_LOGIN')
+          this.$store.commit('INITIAL_LOGIN')
         }).catch(
         (err) => {
           alert('Ooops. ' + err.message)

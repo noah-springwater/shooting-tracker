@@ -59,12 +59,11 @@ export function createStore () {
       CURRENT_TEAM: (state, team) => {
         state.currentTeam = team
       },
-      COMMIT_LOGIN: (state) => {
-        if (state.initialLogin === false) {
-          state.initialLogin = true
-        } else {
-          state.initialLogin = false
-        }
+      INITIAL_LOGIN: (state) => {
+        state.initialLogin = true
+      },
+      SET_LOGIN: (state) => {
+        state.initialLogin = false
       }
     }
   })
