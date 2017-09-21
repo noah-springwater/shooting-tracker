@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
+import createPersistedState from 'vuex-persistedstate'
+import * as Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
@@ -10,10 +12,14 @@ export function createStore () {
       currentUser: {},
       currentDrill: '',
       listOfDrills: [],
-      currentTeam: '',
-      name: 'Johnny Mrlik',
       initialLogin: false
     },
+    plugins: [
+      createPersistedState({
+        getState: (key) => Cookies.getJSON(key),
+        setState: (key, state) => Cookies.set(key, state, { expires: 3, secure: false })
+      })
+    ],
     actions: {
       SET_USER_AND_TEAM: ({ commit }) => {
         let user = firebase.auth().currentUser
@@ -38,6 +44,11 @@ export function createStore () {
         } else {
           commit('CURRENT_TEAM', null)
         }
+      },
+      SET_PLAYER_INFO: ({ commit }, payload) => {
+        // let user = firebase.auth().currentUser
+
+        console.log(payload)
       }
     },
     mutations: {
@@ -63,7 +74,13 @@ export function createStore () {
         state.initialLogin = true
       },
       SET_LOGIN: (state) => {
-        state.initialLogin = false
+        state.initialLogin = true
+      },
+      SET_PLAYER_NUMBER: (state, number) => {
+        state.number = number
+      },
+      SET_PLAYER_NAME: (state, name) => {
+        state.name = name
       }
     }
   })
