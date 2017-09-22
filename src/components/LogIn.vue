@@ -10,6 +10,8 @@
 
 <script>
 import firebase from 'firebase'
+const db = firebase.database()
+const teamsRef = db.ref('teams')
 
 export default {
   name: 'login',
@@ -24,6 +26,13 @@ export default {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
         (user) => {
           this.$router.replace('home/:id')
+          // Check to see if it's initial login
+          teamsRef.child(this.$store.state.currentTeam).once('value').then((snapshot) => {
+            snapshot.child('players').forEach((childSnapshot) => {
+              // let allEmailAddresses = childSnapshot.val().email
+              console.log(this.$store.state.currentUser.email.exists())
+            })
+          })
         }).catch(
         (err) => {
           alert('Ooops. ' + err.message)

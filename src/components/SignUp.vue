@@ -10,8 +10,6 @@
 
 <script>
 import firebase from 'firebase'
-// const db = firebase.database()
-// const teamsRef = db.ref('teams')
 
 export default {
   name: 'signUp',
