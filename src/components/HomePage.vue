@@ -29,6 +29,7 @@ export default {
     logOut () {
       firebase.auth().signOut().then(() => {
         this.$store.commit('SET_LOGIN')
+        this.$store.dispatch('SET_PLAYER_INFO')
         this.$router.replace('/')
       })
     }

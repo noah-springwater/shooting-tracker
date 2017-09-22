@@ -28,9 +28,14 @@ firebase.auth().onAuthStateChanged(function (user) {
       created () {
         firebase.auth().onAuthStateChanged((user) => {
           this.$store.dispatch('SET_USER_AND_TEAM')
-
           if (user) {
             this.$router.push('/home/' + user.uid)
+            teamsRef.child(this.$store.state.currentTeam).once('value').then((snapshot) => {
+              snapshot.child('players').forEach((childSnapshot) => {
+                let email = childSnapshot
+                console.log(email)
+              })
+            })
           } else {
             this.$router.push('/')
           }
