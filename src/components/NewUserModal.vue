@@ -10,8 +10,9 @@
 
 <script>
 import firebase from 'firebase'
-const db = firebase.database()
-const playersRef = db.ref('teams')
+let user = firebase.auth().currentUser
+// const db = firebase.database()
+// const playersRef = db.ref('teams')
 
 export default {
   data () {
@@ -26,16 +27,29 @@ export default {
     setPlayerInfo () {
       this.fullName = this.firstName + ' ' + this.lastName
       this.jerseyNumber = parseInt(this.jerseyNumber)
-      this.$store.dispatch('SET_PLAYER_INFO', [this.fullName, this.jerseyNumber])
 
-      this.addPlayerToDatabase()
+      // console.log(this.fullName)
+      // console.log(this.jerseyNumber)
+
+      if (user) {
+        user.updateProfile({
+          displayName: this.fullName,
+          'number': this.jerseyNumber
+        }).then(() => {
+          console.log(user.displayName)
+          console.log(user.number)
+        })
+      }
+      // this.$store.dispatch('SET_PLAYER_INFO', [this.fullName, this.jerseyNumber])
+
+      // this.addPlayerToDatabase()
     },
     addPlayerToDatabase () {
-      playersRef.child(this.$store.state.currentTeam).child('players').child(this.$store.state.name).set({
-        'id': this.$store.state.currentUser.uid,
-        'email': this.$store.state.currentUser.email,
-        'jersey': this.$store.state.number
-      })
+      // playersRef.child(this.$store.state.currentTeam).child('players').child(this.$store.state.name).set({
+      //   'id': this.$store.state.currentUser.uid,
+      //   'email': this.$store.state.currentUser.email,
+      //   'jersey': this.$store.state.number
+      // })
     }
   }
 }

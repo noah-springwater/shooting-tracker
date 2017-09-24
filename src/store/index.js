@@ -44,23 +44,23 @@ export function createStore () {
         } else {
           commit('CURRENT_TEAM', null)
         }
-      },
-      SET_PLAYER_INFO: ({ commit }, payload) => {
-        let user = firebase.auth().currentUser
-        if (user) {
-          let fullName = payload[0]
-          let number = payload[1]
-          if (number) {
-            commit('SET_PLAYER_NUMBER', number)
-            commit('SET_PLAYER_NAME', fullName)
-            commit('SET_LOGIN')
-          }
-        } else {
-          commit('SET_PLAYER_NUMBER', null)
-          commit('SET_PLAYER_NAME', null)
-          commit('SET_LOGIN')
-        }
       }
+      // SET_PLAYER_INFO: ({ commit }, payload) => {
+      //   let user = firebase.auth().currentUser
+      //   if (user) {
+      //     let fullName = payload[0]
+      //     let number = payload[1]
+      //     if (number) {
+      //       commit('SET_PLAYER_NUMBER', number)
+      //       commit('SET_PLAYER_NAME', fullName)
+      //       commit('SET_LOGIN')
+      //     }
+      //   } else {
+      //     commit('SET_PLAYER_NUMBER', null)
+      //     commit('SET_PLAYER_NAME', null)
+      //     // commit('SET_LOGIN')
+      //   }
+      // }
     },
     mutations: {
       CURRENT_USER: (state, user) => {
@@ -84,9 +84,9 @@ export function createStore () {
       INITIAL_LOGIN: (state) => {
         state.initialLogin = true
       },
-      SET_LOGIN: (state) => {
-        state.initialLogin = false
-      },
+      // SET_LOGIN: (state) => {
+      //   state.initialLogin = false
+      // },
       SET_PLAYER_NUMBER: (state, number) => {
         state.number = number
       },
