@@ -27,11 +27,20 @@ firebase.auth().onAuthStateChanged(function (user) {
       router,
       created () {
         firebase.auth().onAuthStateChanged((user) => {
-          this.$store.dispatch('SET_USER_AND_TEAM')
           if (user) {
+            // On login or signup, sets team based on email address
+            this.$store.dispatch('SET_USER_AND_TEAM')
+            // On login or signup, checks to see if the user's data exists
+            // in the data
+            if (this.$store.state.currentUser.displayName) {
+              console.log('has name')
+            } else {
+              console.log('no name')
+            }
             this.$router.push('/home/' + user.uid)
           } else {
             this.$router.push('/')
+            this.$store.dispatch('CLEAR_STATE')
           }
         })
       },

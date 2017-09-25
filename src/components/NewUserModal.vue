@@ -1,56 +1,46 @@
 <template>
-  <div class="modal-container" v-if="this.$store.state.initialLogin">
+  <div class="modal-container" v-if="!this.$store.state.name">
     <h3>Enter Player Info</h3>
     <input type="text" v-model="firstName" placeholder="First Name" required><br>
     <input type="text" v-model="lastName" placeholder="Last Name" required><br>
     <input type="number" v-model="jerseyNumber" placeholder="Jersey Number"><br>
-    <button v-on:click="setPlayerInfo">Connection</button>
+    <button v-on:click="updateDisplayName">Connection</button>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase'
-let user = firebase.auth().currentUser
+// import firebase from 'firebase'
+// let user = firebase.auth().currentUser
 // const db = firebase.database()
 // const playersRef = db.ref('teams')
 
 export default {
   data () {
     return {
-      firstName: '',
-      lastName: '',
-      fullName: '',
-      jerseyNumber: ''
+      firstName: null,
+      lastName: null,
+      fullName: null,
+      jerseyNumber: null
     }
   },
   methods: {
-    setPlayerInfo () {
-      this.fullName = this.firstName + ' ' + this.lastName
-      this.jerseyNumber = parseInt(this.jerseyNumber)
-
-      // console.log(this.fullName)
-      // console.log(this.jerseyNumber)
-
-      if (user) {
-        user.updateProfile({
-          displayName: this.fullName,
-          'number': this.jerseyNumber
-        }).then(() => {
-          console.log(user.displayName)
-          console.log(user.number)
-        })
+    updateDisplayName () {
+      if (this.firstName && this.lastName && this.jerseyNumber !== (null || '')) {
+        console.log('good')
+        this.$store.dispatch('SET_PLAYER_DATA', [this.firstName, this.lastName, this.jerseyNumber])
+      } else {
+        console.log('not all fields are filled out')
       }
-      // this.$store.dispatch('SET_PLAYER_INFO', [this.fullName, this.jerseyNumber])
-
-      // this.addPlayerToDatabase()
-    },
-    addPlayerToDatabase () {
-      // playersRef.child(this.$store.state.currentTeam).child('players').child(this.$store.state.name).set({
-      //   'id': this.$store.state.currentUser.uid,
-      //   'email': this.$store.state.currentUser.email,
-      //   'jersey': this.$store.state.number
-      // })
     }
+    // addPlayerToDatabase () {
+    //   playersRef.child(this.$store.state.currentTeam).child('players').child(this.$store.state.currentUser.displayName).set({
+    //     'id': this.$store.state.currentUser.uid,
+    //     'email': this.$store.state.currentUser.email,
+    //     'jersey': this.$store.state.number
+    //   })
+    // }
+  },
+  created () {
   }
 }
 </script>
