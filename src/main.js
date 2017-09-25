@@ -32,6 +32,7 @@ firebase.auth().onAuthStateChanged(function (user) {
             this.$store.dispatch('SET_PLAYER_DATA')
           } else {
             this.$router.push('/')
+            this.$store.dispatch('CLEAR_STATE')
           }
         })
       },

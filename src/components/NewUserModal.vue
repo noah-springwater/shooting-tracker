@@ -24,11 +24,12 @@ export default {
   },
   methods: {
     commitToDatabase () {
-      // if (this.firstName && this.lastName && this.jerseyNumber) {
-      //   playersRef.child()
-      // } else {
-      //
-      // }
+      if (this.firstName && this.lastName && this.jerseyNumber) {
+        this.$store.commit('IS_NOT_INITIAL_LOGIN')
+        console.log(this.$store.state.initialLogin)
+      } else {
+        console.log('initial login still true')
+      }
     }
   },
   created () {
