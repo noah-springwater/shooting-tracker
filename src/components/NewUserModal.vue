@@ -4,7 +4,7 @@
     <input type="text" v-model="firstName" placeholder="First Name" required><br>
     <input type="text" v-model="lastName" placeholder="Last Name" required><br>
     <input type="number" v-model="jerseyNumber" placeholder="Jersey Number"><br>
-    <button v-on:click="updateDisplayName">Connection</button>
+    <button v-on:click="commitToDatabase">Connection</button>
   </div>
 </template>
 
@@ -19,26 +19,17 @@ export default {
     return {
       firstName: null,
       lastName: null,
-      fullName: null,
       jerseyNumber: null
     }
   },
   methods: {
-    updateDisplayName () {
-      if (this.firstName && this.lastName && this.jerseyNumber !== (null || '')) {
-        console.log('good')
-        this.$store.dispatch('SET_PLAYER_DATA', [this.firstName, this.lastName, this.jerseyNumber])
-      } else {
-        console.log('not all fields are filled out')
-      }
+    commitToDatabase () {
+      // if (this.firstName && this.lastName && this.jerseyNumber) {
+      //   playersRef.child()
+      // } else {
+      //
+      // }
     }
-    // addPlayerToDatabase () {
-    //   playersRef.child(this.$store.state.currentTeam).child('players').child(this.$store.state.currentUser.displayName).set({
-    //     'id': this.$store.state.currentUser.uid,
-    //     'email': this.$store.state.currentUser.email,
-    //     'jersey': this.$store.state.number
-    //   })
-    // }
   },
   created () {
   }
