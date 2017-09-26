@@ -29,7 +29,11 @@ firebase.auth().onAuthStateChanged(function (user) {
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             this.$router.push('/home/' + user.uid)
-            this.$store.dispatch('SET_PLAYER_DATA')
+            this.$store.dispatch('SET_TEAM')
+            this.$store.dispatch('SET_LOGIN')
+            this.$store.commit('SET_CURRENT_PLAYER_NAME', user.displayName)
+            this.$store.commit('SET_CURRENT_USER', user)
+            console.log(user)
           } else {
             this.$router.push('/')
             this.$store.dispatch('CLEAR_STATE')
