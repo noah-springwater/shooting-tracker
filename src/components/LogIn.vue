@@ -10,8 +10,6 @@
 
 <script>
 import firebase from 'firebase'
-// const db = firebase.database()
-// const teamsRef = db.ref('teams')
 
 export default {
   name: 'login',
@@ -25,7 +23,6 @@ export default {
     signIn () {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
         (user) => {
-          console.log(user)
           this.$router.replace('home/:id')
         }).catch(
         (err) => {

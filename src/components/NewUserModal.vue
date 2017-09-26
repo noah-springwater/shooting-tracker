@@ -29,11 +29,13 @@ export default {
     updateProfile () {
       let fullName = this.firstName + ' ' + this.lastName
       this.$store.state.currentUser.updateProfile({
-        displayName: fullName
+        displayName: fullName,
+        jerseyNumber: this.jerseyNumber
       }).then(() => {
         let setPlayers = this.$root.$firebaseRefs.teamsRef.child(this.$store.state.team).child('players').child(this.$store.state.currentUser.displayName)
         setPlayers.set({
-          name: this.$store.state.playerName
+          name: this.$store.state.playerName,
+          number: this.jerseyNumber
         })
         this.$store.commit('SET_CURRENT_PLAYER_NAME', this.$store.state.currentUser.displayName)
       })
