@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-container" v-if="!this.$store.state.playerName">
+  <div class="modal-container">
     <h3>Enter Player Info</h3>
     <input type="text" v-model="firstName" placeholder="First Name" required><br>
     <input type="text" v-model="lastName" placeholder="Last Name" required><br>
@@ -9,11 +9,6 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-let user = firebase.auth().currentUser
-// const db = firebase.database()
-// const playersRef = db.ref('teams')
-
 export default {
   data () {
     return {
@@ -24,29 +19,25 @@ export default {
   },
   methods: {
     setUserData () {
-      // console.log(user)
       if (this.firstName && this.lastName && this.jerseyNumber) {
         this.updateProfile()
         this.$store.commit('IS_NOT_INITIAL_LOGIN')
-        console.log('all of this is happening')
-        console.log(this.$store.state.currentUser)
-        console.log(this.$store.state.initialLogin)
-        console.log(user.displayName)
       } else {
         console.log('initial login still true')
       }
     },
     updateProfile () {
       let fullName = this.firstName + ' ' + this.lastName
-      user.updateProfile({
+      this.$store.state.currentUser.updateProfile({
         displayName: fullName
       }).then(() => {
-        console.log(user)
-        this.$store.commit('SET_CURRENT_PLAYER_NAME', user.displayName)
+        let setPlayers = this.$root.$firebaseRefs.teamsRef.child(this.$store.state.team).child('players').child(this.$store.state.currentUser.displayName)
+        setPlayers.set({
+          name: this.$store.state.playerName
+        })
+        this.$store.commit('SET_CURRENT_PLAYER_NAME', this.$store.state.currentUser.displayName)
       })
     }
-  },
-  created () {
   }
 }
 </script>

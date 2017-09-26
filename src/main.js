@@ -33,7 +33,6 @@ firebase.auth().onAuthStateChanged(function (user) {
             this.$store.dispatch('SET_LOGIN')
             this.$store.commit('SET_CURRENT_PLAYER_NAME', user.displayName)
             this.$store.commit('SET_CURRENT_USER', user)
-            console.log(user)
           } else {
             this.$router.push('/')
             this.$store.dispatch('CLEAR_STATE')

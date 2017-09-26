@@ -4,7 +4,7 @@
     <button v-on:click='logOut'>Log out</button>
     <hr>
     <AddDrill />
-    <NewUserModal v-if="this.$store.state.initialLogin" />
+    <NewUserModal />
   </div>
 </template>
 
@@ -20,13 +20,6 @@ export default {
   },
   data () {
     return {
-      newUser: this.$store.state.initialLogin,
-      test: true
-    }
-  },
-  computed: {
-    watchState () {
-      this.$store.state.initialLogin
     }
   },
   mounted () {
