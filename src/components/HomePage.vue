@@ -4,7 +4,7 @@
     <button v-on:click='logOut'>Log out</button>
     <hr>
     <AddDrill />
-    <NewUserModal />
+    <NewUserModal v-if='this.$store.state.initialLogin'/>
   </div>
 </template>
 

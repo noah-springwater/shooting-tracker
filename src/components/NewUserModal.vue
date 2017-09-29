@@ -32,10 +32,19 @@ export default {
         displayName: fullName,
         jerseyNumber: this.jerseyNumber
       }).then(() => {
-        let setPlayers = this.$root.$firebaseRefs.teamsRef.child(this.$store.state.team).child('players').child(this.$store.state.currentUser.displayName)
-        setPlayers.set({
-          name: this.$store.state.playerName,
-          number: this.jerseyNumber
+        let setPlayers = this.$root.$firebaseRefs.teamsRef.child(this.$store.state.team).child('players')
+        setPlayers.once('value', (snapshot) => {
+          let players = snapshot.child(this.$store.state.currentUser.displayName).exists()
+          if (!players) {
+            setPlayers.child(this.$store.state.currentUser.displayName).set({
+              name: this.$store.state.playerName,
+              number: this.jerseyNumber
+            }).then(
+              this.$store.commit('IS_NOT_INITIAL_LOGIN')
+            )
+          } else {
+            alert('player exists')
+          }
         })
         this.$store.commit('SET_CURRENT_PLAYER_NAME', this.$store.state.currentUser.displayName)
       })
